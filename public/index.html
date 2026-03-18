@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WinShop</title>
+    <title>WihShop</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
@@ -15,35 +15,62 @@
         }
 
         body {
-            /* Background gradient yang lembut */
-            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            /* Background utama halaman */
+            background: #fdfbfb;
             min-height: 100vh;
             color: #333;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* HEADER - Efek Glassmorphism */
+        /* HEADER - Menempel di atas (Sticky) dengan Gradient */
         header {
-            text-align: center;
-            padding: 40px 20px;
-            background: rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
             position: sticky;
             top: 0;
             z-index: 100;
+            background: linear-gradient(60deg, #5b86e5 0%, #36d1dc 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
-        header h1 {
+        .header-content {
+            text-align: center;
+            padding: 30px 20px 0px 20px;
+        }
+
+        .header-content h1 {
             font-size: 2.5rem;
-            color: #2c3e50;
             letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
 
-        header p {
-            color: #7f8c8d;
+        .header-content p {
+            font-size: 1.1rem;
             margin-top: 5px;
+            opacity: 0.9;
+        }
+
+        /* ANIMASI OMBAK (WAVES) */
+        .waves {
+            position: relative;
+            width: 100%;
+            height: 10vh;
+            margin-bottom: -7px; /* Menghilangkan celah putih di bawah ombak */
+            min-height: 40px;
+            max-height: 60px;
+        }
+
+        .parallax > use {
+            animation: move-forever 25s cubic-bezier(.55,.5,.45,.5) infinite;
+        }
+        .parallax > use:nth-child(1) { animation-delay: -2s; animation-duration: 7s; }
+        .parallax > use:nth-child(2) { animation-delay: -3s; animation-duration: 10s; }
+        .parallax > use:nth-child(3) { animation-delay: -4s; animation-duration: 13s; }
+        .parallax > use:nth-child(4) { animation-delay: -5s; animation-duration: 20s; }
+
+        @keyframes move-forever {
+            0% { transform: translate3d(-90px,0,0); }
+            100% { transform: translate3d(85px,0,0); }
         }
 
         /* PRODUCT GRID */
@@ -52,9 +79,10 @@
             flex-wrap: wrap;
             justify-content: center;
             gap: 40px;
-            padding: 60px 20px;
+            padding: 60px 20px 100px 20px;
             max-width: 1200px;
             margin: 0 auto;
+            flex: 1; /* Mendorong footer ke bawah */
         }
 
         /* PRODUCT CARD - Animasi Hover & Bayangan */
@@ -66,7 +94,6 @@
             color: inherit;
             width: 300px;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
-            /* Transisi yang membuat efek pantulan halus */
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
             display: block;
         }
@@ -86,7 +113,6 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            /* Efek zoom lambat pada gambar saat di-hover */
             transition: transform 0.7s ease;
         }
 
@@ -109,7 +135,7 @@
         }
 
         .product-card:hover .product-info h2 {
-            color: #3498db; /* Berubah biru saat di-hover */
+            color: #36d1dc;
         }
 
         .product-info p {
@@ -118,31 +144,73 @@
             font-size: 1.1rem;
         }
 
-        /* ANIMASI MASUK (FADE IN UP) */
+        /* FOOTER */
+        footer {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 50px 20px 20px;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            max-width: 1200px;
+            margin: 0 auto;
+            gap: 30px;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .footer-section h3 {
+            color: #36d1dc;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+        }
+
+        .footer-section p {
+            line-height: 1.8;
+            color: #bdc3c7;
+            font-size: 0.95rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-section ul li a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .footer-section ul li a:hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #95a5a6;
+            font-size: 0.9rem;
+        }
+
+        /* ANIMASI MASUK KARTU PRODUK */
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .animate-down {
-            animation: fadeInDown 1s ease forwards;
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .animate-up {
@@ -150,7 +218,6 @@
             animation: fadeInUp 1s ease forwards;
         }
 
-        /* Mengatur jeda animasi untuk masing-masing kartu */
         .delay-1 { animation-delay: 0.2s; }
         .delay-2 { animation-delay: 0.4s; }
         .delay-3 { animation-delay: 0.6s; }
@@ -159,13 +226,26 @@
 </head>
 <body>
 
-    <header class="animate-down">
-        <h1>✨ SUPER SHOP ✨</h1>
-        <p>Koleksi Terbaik untuk Gaya Kamu</p>
+    <header>
+        <div class="header-content">
+            <h1>✨ WinShop ✨</h1>
+            <p>Koleksi Terbaik untuk Gaya Kamu</p>
+        </div>
+        <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+        viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+            <defs>
+                <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+            </defs>
+            <g class="parallax">
+                <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7" />
+                <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.5)" />
+                <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.3)" />
+                <use xlink:href="#gentle-wave" x="48" y="7" fill="#fdfbfb" />
+            </g>
+        </svg>
     </header>
 
     <main class="product-container">
-        
         <a href="halaman-produk-1.html" class="product-card animate-up delay-1">
             <div class="image-wrapper">
                 <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=500&q=80" alt="Jam Tangan Minimalis">
@@ -195,8 +275,38 @@
                 <p>Rp 420.000</p>
             </div>
         </a>
-
     </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Tentang Super Shop</h3>
+                <p>Kami menyediakan berbagai macam koleksi fashion kekinian dengan kualitas premium dan harga yang bersahabat. Tampil gaya setiap hari bersama kami.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Kontak Kami</h3>
+                <ul>
+                    <li>📞 WhatsApp: 0812-3456-7890</li>
+                    <li>📧 Email: halo@supershop.com</li>
+                    <li>📍 Lokasi: Jl. Gaya Baru No. 1, Jakarta</li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Sosial Media</h3>
+                <ul>
+                    <li><a href="#">Instagram (@supershop)</a></li>
+                    <li><a href="#">TikTok (@supershop_id)</a></li>
+                    <li><a href="#">Facebook Page</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="copyright">
+            &copy; 2026 Super Shop. Semua Hak Dilindungi.
+        </div>
+    </footer>
 
 </body>
 </html>
