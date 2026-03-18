@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WihShop</title>
+    <title>WinShop</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
@@ -15,7 +15,6 @@
         }
 
         body {
-            /* Background utama halaman */
             background: #fdfbfb;
             min-height: 100vh;
             color: #333;
@@ -55,7 +54,7 @@
             position: relative;
             width: 100%;
             height: 10vh;
-            margin-bottom: -7px; /* Menghilangkan celah putih di bawah ombak */
+            margin-bottom: -7px;
             min-height: 40px;
             max-height: 60px;
         }
@@ -73,39 +72,67 @@
             100% { transform: translate3d(85px,0,0); }
         }
 
+        /* MAIN CONTENT AREA */
+        main {
+            flex: 1;
+            padding-bottom: 80px;
+        }
+
+        /* KATEGORI PRODUK */
+        .category-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 50px 20px 10px 20px;
+        }
+
+        .category-title {
+            font-size: 2.2rem;
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        /* Garis bawah pada judul kategori */
+        .category-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: #36d1dc;
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
         /* PRODUCT GRID */
         .product-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 40px;
-            padding: 60px 20px 100px 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-            flex: 1; /* Mendorong footer ke bawah */
+            gap: 30px;
         }
 
         /* PRODUCT CARD - Animasi Hover & Bayangan */
         .product-card {
             background: #ffffff;
-            border-radius: 20px;
+            border-radius: 15px;
             overflow: hidden;
             text-decoration: none;
             color: inherit;
-            width: 300px;
+            width: 260px; /* Sedikit dikecilkan agar muat banyak */
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
             display: block;
         }
 
         .product-card:hover {
-            transform: translateY(-15px);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
         }
 
         .image-wrapper {
             width: 100%;
-            height: 300px;
+            height: 200px; /* Tinggi gambar disesuaikan */
             overflow: hidden;
         }
 
@@ -121,16 +148,15 @@
         }
 
         .product-info {
-            padding: 25px 20px;
+            padding: 20px 15px;
             text-align: center;
             background: white;
-            position: relative;
         }
 
         .product-info h2 {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: #2c3e50;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             transition: color 0.3s ease;
         }
 
@@ -141,7 +167,7 @@
         .product-info p {
             color: #e74c3c;
             font-weight: 600;
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
 
         /* FOOTER */
@@ -149,6 +175,7 @@
             background: #2c3e50;
             color: #ecf0f1;
             padding: 50px 20px 20px;
+            margin-top: auto;
         }
 
         .footer-content {
@@ -172,31 +199,17 @@
             letter-spacing: 1px;
         }
 
-        .footer-section p {
-            line-height: 1.8;
+        .footer-section p, .footer-section ul li a {
             color: #bdc3c7;
             font-size: 0.95rem;
-        }
-
-        .footer-section ul {
-            list-style: none;
-        }
-
-        .footer-section ul li {
-            margin-bottom: 10px;
-        }
-
-        .footer-section ul li a {
-            color: #bdc3c7;
+            line-height: 1.8;
             text-decoration: none;
             transition: color 0.3s ease;
-            font-size: 0.95rem;
         }
 
-        .footer-section ul li a:hover {
-            color: #ffffff;
-            text-decoration: underline;
-        }
+        .footer-section ul { list-style: none; }
+        .footer-section ul li { margin-bottom: 10px; }
+        .footer-section ul li a:hover { color: #ffffff; text-decoration: underline; }
 
         .copyright {
             text-align: center;
@@ -207,20 +220,15 @@
             font-size: 0.9rem;
         }
 
-        /* ANIMASI MASUK KARTU PRODUK */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(50px); }
+        /* ANIMASI MASUK */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .animate-up {
-            opacity: 0;
-            animation: fadeInUp 1s ease forwards;
+        .fade-in {
+            animation: fadeIn 1s ease forwards;
         }
-
-        .delay-1 { animation-delay: 0.2s; }
-        .delay-2 { animation-delay: 0.4s; }
-        .delay-3 { animation-delay: 0.6s; }
 
     </style>
 </head>
@@ -229,7 +237,7 @@
     <header>
         <div class="header-content">
             <h1>✨ WinShop ✨</h1>
-            <p>Koleksi Terbaik untuk Gaya Kamu</p>
+            <p>Penyedia Layanan Server & Panel Terbaik</p>
         </div>
         <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
         viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
@@ -237,7 +245,7 @@
                 <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
             </defs>
             <g class="parallax">
-                <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7" />
+                <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7)" />
                 <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.5)" />
                 <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.3)" />
                 <use xlink:href="#gentle-wave" x="48" y="7" fill="#fdfbfb" />
@@ -245,66 +253,112 @@
         </svg>
     </header>
 
-    <main class="product-container">
-        <a href="halaman-produk-1.html" class="product-card animate-up delay-1">
-            <div class="image-wrapper">
-                <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=500&q=80" alt="Jam Tangan Minimalis">
-            </div>
-            <div class="product-info">
-                <h2>Jam Tangan Minimalis</h2>
-                <p>Rp 250.000</p>
-            </div>
-        </a>
+    <main>
+        <section class="category-section" id="panel">
+            <h2 class="category-title">Produk Panel</h2>
+            <div class="product-container">
+                
+                <a href="#link-produk-1" class="product-card fade-in">
+                    <div class="image-wrapper"><img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=500&q=80" alt="Panel Pterodactyl"></div>
+                    <div class="product-info"><h2>Panel Pterodactyl</h2><p>Rp 50.000 / bln</p></div>
+                </a>
+                <a href="#link-produk-2" class="product-card fade-in">
+                    <div class="image-wrapper"><img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=500&q=80" alt="CyberPanel"></div>
+                    <div class="product-info"><h2>CyberPanel Pro</h2><p>Rp 75.000 / bln</p></div>
+                </a>
+                <a href="#link-produk-3" class="product-card fade-in">
+                    <div class="image-wrapper"><img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=500&q=80" alt="cPanel"></div>
+                    <div class="product-info"><h2>cPanel Lisensi</h2><p>Rp 200.000 / bln</p></div>
+                </a>
+                <a href="#link-produk-4" class="product-card fade-in">
+                    <div class="image-wrapper"><img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=500&q=80" alt="aaPanel"></div>
+                    <div class="product-info"><h2>aaPanel Setup</h2><p>Rp 40.000 / bln</p></div>
+                </a>
+                <a href="#link-produk-5" class="product-card fade-in">
+                    <div class="image-wrapper"><img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=500&q=80" alt="Plesk Panel"></div>
+                    <div class="product-info"><h2>Plesk Obsidian</h2><p>Rp 150.000 / bln</p></div>
+                </a>
+                <a href="#link-produk-6" class="product-card fade-in">
+                    <div class="image-wrapper"><img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=500&q=80" alt="DirectAdmin"></div>
+                    <div class="product-info"><h2>DirectAdmin</h2><p>Rp 120.000 / bln</p></div>
+                </a>
+                <a href="#link-produk-7" class="product-card fade-in">
+                    <div class="image-wrapper"><img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=500&q=80" alt="Webuzo"></div>
+                    <div class="product-info"><h2>Webuzo Premium</h2><p>Rp 60.000 / bln</p></div>
+                </a>
+                <a href="#link-produk-8" class="product-card fade-in">
+                    <div class="image-wrapper"><img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=500&q=80" alt="VestaCP"></div>
+                    <div class="product-info"><h2>VestaCP Config</h2><p>Rp 45.000 / bln</p></div>
+                </a>
+                <a href="#link-produk-9" class="product-card fade-in">
+                    <div class="image-wrapper"><img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=500&q=80" alt="CloudPanel"></div>
+                    <div class="product-info"><h2>CloudPanel OS</h2><p>Rp 55.000 / bln</p></div>
+                </a>
+                <a href="#link-produk-10" class="product-card fade-in">
+                    <div class="image-wrapper"><img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=500&q=80" alt="HestiaCP"></div>
+                    <div class="product-info"><h2>HestiaCP Full</h2><p>Rp 65.000 / bln</p></div>
+                </a>
 
-        <a href="halaman-produk-2.html" class="product-card animate-up delay-2">
-            <div class="image-wrapper">
-                <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=500&q=80" alt="Sepatu Sneakers Merah">
             </div>
-            <div class="product-info">
-                <h2>Sneakers Sport Red</h2>
-                <p>Rp 850.000</p>
-            </div>
-        </a>
+        </section>
 
-        <a href="halaman-produk-3.html" class="product-card animate-up delay-3">
-            <div class="image-wrapper">
-                <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=500&q=80" alt="Tas Ransel Kulit">
+        <section class="category-section" id="vps">
+            <h2 class="category-title">Produk VPS</h2>
+            <div class="product-container">
+                
+                <a href="#link-vps-1" class="product-card fade-in">
+                    <div class="image-wrapper"><img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=500&q=80" alt="VPS 1GB"></div>
+                    <div class="product-info"><h2>VPS 1GB RAM / 1 Core</h2><p>Rp 80.000 / bln</p></div>
+                </a>
+                <a href="#link-vps-2" class="product-card fade-in">
+                    <div class="image-wrapper"><img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=500&q=80" alt="VPS 2GB"></div>
+                    <div class="product-info"><h2>VPS 2GB RAM / 2 Core</h2><p>Rp 150.000 / bln</p></div>
+                </a>
+                <a href="#link-vps-3" class="product-card fade-in">
+                    <div class="image-wrapper"><img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=500&q=80" alt="VPS 4GB"></div>
+                    <div class="product-info"><h2>VPS 4GB RAM / 2 Core</h2><p>Rp 250.000 / bln</p></div>
+                </a>
+                <a href="#link-vps-4" class="product-card fade-in">
+                    <div class="image-wrapper"><img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=500&q=80" alt="VPS 8GB"></div>
+                    <div class="product-info"><h2>VPS 8GB RAM / 4 Core</h2><p>Rp 400.000 / bln</p></div>
+                </a>
+                <a href="#link-vps-5" class="product-card fade-in">
+                    <div class="image-wrapper"><img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=500&q=80" alt="VPS 16GB"></div>
+                    <div class="product-info"><h2>VPS 16GB RAM / 6 Core</h2><p>Rp 750.000 / bln</p></div>
+                </a>
+
             </div>
-            <div class="product-info">
-                <h2>Tas Ransel Kulit</h2>
-                <p>Rp 420.000</p>
-            </div>
-        </a>
+        </section>
     </main>
 
     <footer>
         <div class="footer-content">
             <div class="footer-section">
                 <h3>Tentang Super Shop</h3>
-                <p>Kami menyediakan berbagai macam koleksi fashion kekinian dengan kualitas premium dan harga yang bersahabat. Tampil gaya setiap hari bersama kami.</p>
+                <p>Kami menyediakan berbagai macam layanan server, VPS, dan lisensi panel dengan performa tinggi dan uptime 99.9%. Solusi terbaik untuk website dan aplikasimu.</p>
             </div>
             
             <div class="footer-section">
                 <h3>Kontak Kami</h3>
                 <ul>
                     <li>📞 WhatsApp: 0812-3456-7890</li>
-                    <li>📧 Email: halo@supershop.com</li>
-                    <li>📍 Lokasi: Jl. Gaya Baru No. 1, Jakarta</li>
+                    <li>📧 Email: admin@winshop.com</li>
+                    <li>📍 Lokasi: Jl. Server Nusantara No. 1</li>
                 </ul>
             </div>
 
             <div class="footer-section">
-                <h3>Sosial Media</h3>
+                <h3>Navigasi Cepat</h3>
                 <ul>
-                    <li><a href="#">Instagram (@supershop)</a></li>
-                    <li><a href="#">TikTok (@supershop_id)</a></li>
-                    <li><a href="#">Facebook Page</a></li>
+                    <li><a href="#panel">Lihat Produk Panel</a></li>
+                    <li><a href="#vps">Lihat Produk VPS</a></li>
+                    <li><a href="#">Syarat & Ketentuan</a></li>
                 </ul>
             </div>
         </div>
 
         <div class="copyright">
-            &copy; 2026 Super Shop. Semua Hak Dilindungi.
+            &copy; 2026 WinShop. Semua Hak Dilindungi.
         </div>
     </footer>
 
