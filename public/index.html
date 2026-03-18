@@ -2,289 +2,280 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KBBI WinYuk | Eksplorasi Kata</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>KBBI | WINYUK </title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Plus+Jakarta+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     
     <style>
         :root {
-            --bg: #050505;
+            --bg: #030303;
             --gold: #d4af37;
-            --gold-soft: rgba(212, 175, 55, 0.15);
-            --glass: rgba(255, 255, 255, 0.02);
-            --border: rgba(255, 255, 255, 0.08);
-            --text-dim: #71717a;
+            --gold-dim: rgba(212, 175, 55, 0.1);
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.06);
+            --text-muted: #888;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        * { 
+            margin: 0; padding: 0; box-sizing: border-box; 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            -webkit-tap-highlight-color: transparent;
+        }
         
         body {
             background-color: var(--bg);
             color: #fff;
             min-height: 100vh;
             overflow-x: hidden;
+            background-image: radial-gradient(circle at 50% -20%, #1a1a1a 0%, #030303 100%);
         }
 
-        /* --- LOADING OVERLAY --- */
+        /* --- PRELOADER (ULTRA SMOOTH) --- */
         #loading-overlay {
             position: fixed; inset: 0; background: var(--bg);
             z-index: 9999; display: flex; flex-direction: column;
             justify-content: center; align-items: center;
         }
 
-        .loader-text {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem; color: var(--gold);
-            letter-spacing: 4px; animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
-
-        /* --- BACKGROUND DECOR --- */
-        .ambient {
-            position: fixed; width: 50vw; height: 50vw;
-            background: radial-gradient(circle, var(--gold-soft) 0%, transparent 70%);
-            top: -20%; right: -10%; z-index: -1; pointer-events: none;
+        .loader-logo {
+            font-family: 'Marcellus', serif;
+            font-size: 2rem; color: var(--gold);
+            letter-spacing: 10px; text-transform: uppercase;
         }
 
         /* --- NAVIGATION --- */
         nav {
-            padding: 2rem 8%; display: flex; justify-content: space-between;
+            padding: 1rem 5%; display: flex; justify-content: space-between;
             align-items: center; border-bottom: 1px solid var(--border);
             backdrop-filter: blur(20px); position: sticky; top: 0; z-index: 100;
         }
 
         .logo {
-            font-family: 'Playfair Display', serif; font-size: 1.8rem;
-            background: linear-gradient(90deg, #fff, var(--gold), #fff);
-            background-size: 200% auto; -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent; animation: shine 5s linear infinite;
+            font-family: 'Marcellus', serif; font-size: 1.4rem;
+            letter-spacing: 2px; color: var(--gold);
         }
 
-        @keyframes shine { to { background-position: 200% center; } }
+        /* --- MAIN CONTAINER --- */
+        .container { 
+            width: 100%; max-width: 1200px; 
+            margin: 0 auto; padding: 2rem 5%; 
+        }
 
-        /* --- MAIN CONTENT --- */
-        .container { max-width: 1000px; margin: 4rem auto; padding: 0 2rem; }
+        .hero { text-align: center; margin-bottom: 3rem; }
+        .hero h1 { 
+            font-family: 'Marcellus', serif; font-size: clamp(2rem, 8vw, 3.5rem); 
+            margin-bottom: 0.5rem; background: linear-gradient(to bottom, #fff, #888);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
 
-        .hero-section { text-align: center; margin-bottom: 4rem; }
-        .hero-section h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 6vw, 4rem); margin-bottom: 1rem; }
-        .hero-section p { color: var(--text-dim); letter-spacing: 1px; }
-
-        /* --- SEARCH PANEL --- */
-        .search-panel {
+        /* --- PREMIUM SEARCH BOX (RESPONSIVE) --- */
+        .search-card {
             background: var(--glass); border: 1px solid var(--border);
-            padding: 40px; border-radius: 40px;
-            display: grid; grid-template-columns: 1fr 1fr; gap: 30px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
-            margin-bottom: 3rem;
+            padding: 2rem; border-radius: 24px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            margin-bottom: 2rem; backdrop-filter: blur(10px);
         }
 
-        .input-group { position: relative; }
-        .input-group label {
-            display: block; font-size: 0.7rem; color: var(--gold);
-            text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px; font-weight: 600;
+        .input-wrap { display: flex; flex-direction: column; gap: 8px; }
+        .input-wrap label { 
+            font-size: 0.65rem; color: var(--gold); 
+            text-transform: uppercase; letter-spacing: 2px; font-weight: 600;
         }
 
         input {
-            width: 100%; background: rgba(255,255,255,0.03);
-            border: 1px solid var(--border); padding: 18px 25px;
-            border-radius: 16px; color: #fff; font-size: 1.2rem;
-            outline: none; transition: 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            width: 100%; background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border); padding: 14px 20px;
+            border-radius: 12px; color: #fff; font-size: 1rem;
+            outline: none; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        input:focus { border-color: var(--gold); background: rgba(255,255,255,0.08); }
-        input:disabled { opacity: 0.3; cursor: not-allowed; }
+        input:focus { border-color: var(--gold); background: rgba(255,255,255,0.06); }
 
-        /* --- WORD GRID --- */
-        .stats { text-align: center; margin-bottom: 2rem; font-size: 0.9rem; color: var(--gold); font-weight: 600; }
+        /* --- GRID HASIL (RAPI DI HP) --- */
+        .stats-bar { 
+            text-align: center; margin-bottom: 1.5rem; 
+            font-size: 0.8rem; color: var(--text-muted); 
+        }
 
         #word-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 15px;
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
         }
 
-        .word-card {
+        .word-item {
             background: var(--glass); border: 1px solid var(--border);
-            padding: 20px; border-radius: 18px; text-align: center;
-            font-size: 1.1rem; transition: 0.5s; opacity: 0;
+            padding: 16px; border-radius: 14px; text-align: center;
+            font-size: 0.95rem; font-weight: 500; opacity: 0;
+            transform: translateY(10px); transition: 0.3s;
         }
 
-        .word-card:hover {
-            background: var(--gold); color: #000;
-            transform: translateY(-8px) scale(1.05);
-            box-shadow: 0 20px 40px rgba(212, 175, 55, 0.2);
+        .word-item:active { background: var(--gold); color: #000; transform: scale(0.95); }
+
+        @media (hover: hover) {
+            .word-item:hover {
+                background: var(--gold); color: #000;
+                transform: translateY(-5px); box-shadow: 0 10px 20px rgba(212, 175, 55, 0.2);
+            }
         }
 
-        .status-box {
-            grid-column: 1 / -1; padding: 40px; text-align: center;
-            background: var(--glass); border-radius: 20px; border: 1px dashed var(--gold);
-            color: var(--text-dim); line-height: 1.8;
+        /* --- MOBILE OPTIMIZATION --- */
+        @media (max-width: 600px) {
+            nav { padding: 1rem 6%; }
+            .container { padding: 1.5rem 6%; }
+            .search-card { 
+                grid-template-columns: 1fr; /* Stack input di HP */
+                padding: 1.5rem; gap: 1rem;
+                border-radius: 20px;
+            }
+            #word-grid {
+                grid-template-columns: repeat(2, 1fr); /* 2 Kolom rapi di HP */
+                gap: 10px;
+            }
+            .word-item { padding: 12px; font-size: 0.85rem; }
         }
 
-        @media (max-width: 650px) {
-            .search-panel { grid-template-columns: 1fr; padding: 25px; }
+        .status-msg {
+            grid-column: 1 / -1; padding: 3rem 1rem; text-align: center;
+            color: var(--text-muted); font-size: 0.9rem;
+            border: 1px dashed var(--border); border-radius: 20px;
         }
     </style>
 </head>
 <body>
 
     <div id="loading-overlay">
-        <div class="loader-text">LOADING...</div>
+        <div class="loader-logo" id="loader-text">KBBI WINYUK</div>
     </div>
 
-    <div class="ambient"></div>
-
     <nav>
-        <div class="logo">KBBI.WINYUK</div>
-        <div id="word-count" style="font-size: 0.8rem; color: var(--text-dim); letter-spacing: 1px;">0 kata terunduh</div>
+        <div class="logo">WINYUK.</div>
+        <div id="word-count" style="font-size: 0.6rem; color: var(--gold); letter-spacing: 1px;">SINKRONISASI...</div>
     </nav>
 
     <main class="container">
-        <div class="hero-section">
-            <h1>Eksplorasi <span style="font-style: italic; color: var(--gold);">Kosakata.</span></h1>
-            <p>Database 140.000+ kata dasar Indonesia.</p>
-        </div>
+        <header class="hero">
+            <h1>Cari Kata.</h1>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Database 140.000+ Kosakata Bahasa Indonesia</p>
+        </header>
 
-        <div class="search-panel">
-            <div class="input-group">
-                <label>Berdasar Awalan</label>
-                <input type="text" id="awalan" placeholder="Contoh: e" disabled>
+        <section class="search-card">
+            <div class="input-wrap">
+                <label>Awalan</label>
+                <input type="text" id="awalan" placeholder="Misal: e" autocomplete="off" disabled>
             </div>
-            <div class="input-group">
-                <label>Berdasar Akhiran</label>
-                <input type="text" id="akhiran" placeholder="Contoh: g" disabled>
+            <div class="input-wrap">
+                <label>Akhiran</label>
+                <input type="text" id="akhiran" placeholder="Misal: g" autocomplete="off" disabled>
             </div>
-        </div>
+        </section>
 
-        <div class="stats" id="info-status">Siap menjelajah</div>
+        <div class="stats-bar" id="info-text">Menghubungkan ke database...</div>
 
         <div id="word-grid">
             </div>
     </main>
 
     <script>
-        let dbKata = []; 
-
+        let dbKata = [];
         const inputAwalan = document.getElementById('awalan');
         const inputAkhiran = document.getElementById('akhiran');
-        const wadahGrid = document.getElementById('word-grid');
-        const teksJumlahKata = document.getElementById('word-count');
-        const teksInfoStatus = document.getElementById('info-status');
-        const loadingOverlay = document.getElementById('loading-overlay');
+        const grid = document.getElementById('word-grid');
+        const labelCount = document.getElementById('word-count');
+        const labelInfo = document.getElementById('info-text');
 
-        const SUMBER_DATABASE = [
+        const DATABASE_URLS = [
             'https://raw.githubusercontent.com/damzaky/kumpulan-kata-bahasa-indonesia-KBBI/master/list_1.0.0.txt',
             'https://raw.githubusercontent.com/sastrawi/sastrawi/master/data/kata-dasar.txt'
         ];
 
-        async function ambilDanGabungkanData() {
+        async function initApp() {
             try {
-                const waktuMulai = Date.now();
+                // GSAP Intro
+                gsap.from("#loader-text", { opacity: 0, y: 20, duration: 1, ease: "power3.out" });
 
-                const penampungData = await Promise.all(
-                    SUMBER_DATABASE.map(url => fetch(url).then(res => res.text()))
-                );
-
-                let semuaKataGabungan = [];
-
-                penampungData.forEach(teksData => {
-                    const kataDariSumber = teksData.split('\n')
-                        .map(kata => kata.trim().toLowerCase())
-                        .filter(kata => 
-                            kata.length > 0 &&
-                            kata.indexOf(' ') === -1 && 
-                            !kata.includes('-')
-                        );
-                    
-                    semuaKataGabungan = semuaKataGabungan.concat(kataDariSumber);
+                const startTime = Date.now();
+                const responses = await Promise.all(DATABASE_URLS.map(url => fetch(url).then(r => r.text())));
+                
+                let combined = [];
+                responses.forEach(data => {
+                    const lines = data.split('\n')
+                        .map(k => k.trim().toLowerCase())
+                        .filter(k => k.length > 0 && !k.includes(' ') && !k.includes('-'));
+                    combined = [...combined, ...lines];
                 });
 
-                dbKata = [...new Set(semuaKataGabungan)].sort();
+                dbKata = [...new Set(combined)].sort();
 
-                const waktuSelesai = Date.now() - waktuMulai;
-                const JEDA_MINIMAL = 2000; 
+                const loadTime = Date.now() - startTime;
+                const minWait = 1800;
+                
+                setTimeout(() => {
+                    gsap.to("#loading-overlay", { 
+                        opacity: 0, 
+                        duration: 0.8, 
+                        onComplete: () => {
+                            document.getElementById('loading-overlay').style.display = 'none';
+                            inputAwalan.disabled = false;
+                            inputAkhiran.disabled = false;
+                            labelCount.textContent = `${dbKata.length.toLocaleString()} KATA`;
+                            labelInfo.textContent = "Masukkan awalan atau akhiran";
+                        }
+                    });
+                }, loadTime < minWait ? minWait - loadTime : 0);
 
-                if (waktuSelesai < JEDA_MINIMAL) {
-                    await new Promise(resolve => setTimeout(resolve, JEDA_MINIMAL - waktuSelesai));
-                }
-
-                // Sembunyikan Loader dengan GSAP
-                gsap.to(loadingOverlay, { opacity: 0, duration: 1, onComplete: () => {
-                    loadingOverlay.style.display = 'none';
-                    inputAwalan.disabled = false;
-                    inputAkhiran.disabled = false;
-                    teksJumlahKata.textContent = `${dbKata.length.toLocaleString()} kata tersedia`;
-                    saringKata();
-                }});
-
-            } catch (error) {
-                console.error(error);
-                wadahGrid.innerHTML = `
-                    <div class="status-box" style="border-color: #ef4444; color: #ef4444;">
-                        <strong>❌ Akses Database Terganggu</strong><br>
-                        Pastikan koneksi internet aktif untuk menarik data dari repositori GitHub.
-                    </div>
-                `;
-                loadingOverlay.style.display = 'none';
+            } catch (err) {
+                labelInfo.textContent = "Gagal memuat data. Periksa internet.";
             }
         }
 
-        function saringKata() {
-            const awalan = inputAwalan.value.toLowerCase().trim();
-            const akhiran = inputAkhiran.value.toLowerCase().trim();
+        function filterData() {
+            const pre = inputAwalan.value.toLowerCase().trim();
+            const suf = inputAkhiran.value.toLowerCase().trim();
 
-            const hasilFilter = dbKata.filter(kata => {
-                const cocokAwalan = awalan === "" || kata.startsWith(awalan);
-                const cocokAkhiran = akhiran === "" || kata.endsWith(akhiran);
-                return cocokAwalan && cocokAkhiran;
+            const filtered = dbKata.filter(k => {
+                return (pre === "" || k.startsWith(pre)) && (suf === "" || k.endsWith(suf));
             });
 
-            tampilkanKeLayar(hasilFilter);
+            renderGrid(filtered);
         }
 
-        function tampilkanKeLayar(daftarKata) {
-            wadahGrid.innerHTML = "";
-            const MAKSIMAL_TAMPIL = 100; // Dikurangi agar animasi GSAP tetap lancar
-            const totalDitemukan = daftarKata.length;
+        function renderGrid(list) {
+            grid.innerHTML = "";
+            const LIMIT = 80;
+            const shown = list.slice(0, LIMIT);
 
-            if (totalDitemukan === 0) {
-                teksInfoStatus.textContent = `0 kata ditemukan`;
-                wadahGrid.innerHTML = `
-                    <div class="status-box">
-                        <strong>Kombinasi Tidak Ditemukan</strong><br>
-                        Cobalah huruf awalan atau akhiran yang berbeda.
-                    </div>
-                `;
+            if (list.length === 0) {
+                grid.innerHTML = `<div class="status-msg">Tidak ada kata tunggal yang ditemukan.</div>`;
+                labelInfo.textContent = "0 kata ditemukan";
                 return;
             }
 
-            teksInfoStatus.textContent = `${totalDitemukan.toLocaleString()} kata ditemukan ${totalDitemukan > MAKSIMAL_TAMPIL ? '(Hanya 100 ditampilkan)' : ''}`;
+            labelInfo.textContent = `${list.length.toLocaleString()} kata ditemukan ${list.length > LIMIT ? `(Tampil ${LIMIT})` : ''}`;
 
-            const kataYangDitampilkan = daftarKata.slice(0, MAKSIMAL_TAMPIL);
+            shown.forEach((word, i) => {
+                const card = document.createElement('div');
+                card.className = 'word-item';
+                card.textContent = word;
+                grid.appendChild(card);
 
-            kataYangDitampilkan.forEach((kata, index) => {
-                const elemenKartu = document.createElement('div');
-                elemenKartu.className = 'word-card';
-                elemenKartu.textContent = kata;
-                wadahGrid.appendChild(elemenKartu);
-
-                // Animasi GSAP Stagger
-                gsap.to(elemenKartu, {
+                gsap.to(card, {
                     opacity: 1,
                     y: 0,
-                    duration: 0.5,
-                    delay: index * 0.02,
+                    duration: 0.4,
+                    delay: (i % 20) * 0.03, // Efek gelombang mengalir
                     ease: "power2.out"
                 });
             });
         }
 
-        inputAwalan.addEventListener('input', saringKata);
-        inputAkhiran.addEventListener('input', saringKata);
+        inputAwalan.addEventListener('input', filterData);
+        inputAkhiran.addEventListener('input', filterData);
 
-        ambilDanGabungkanData();
+        initApp();
     </script>
 </body>
 </html>
