@@ -3,251 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KBBI Premium Experience | Modern Lexicon</title>
-    
+    <title>KBBI Premium | Ultimate Filter</title>
     <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-
+    
     <style>
         :root {
-            --bg: #050505;
-            --gold: #c5a059;
-            --gold-light: #e2c28d;
+            --bg: #080808;
+            --gold: #d4af37;
             --glass: rgba(255, 255, 255, 0.03);
-            --text-muted: #888;
+            --border: rgba(212, 175, 55, 0.2);
         }
 
-        * {
-            margin: 0; padding: 0; box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: var(--bg); color: white; min-height: 100vh; overflow-x: hidden; }
 
-        body {
-            background-color: var(--bg);
-            color: white;
-            overflow-x: hidden;
-            min-height: 100vh;
-        }
-
-        /* --- PRELOADER --- */
-        #loader {
-            position: fixed; width: 100%; height: 100%;
-            background: var(--bg); z-index: 9999;
-            display: flex; justify-content: center; align-items: center;
-        }
-
-        /* --- BACKGROUND DECOR --- */
-        .glow {
-            position: fixed; width: 40vw; height: 40vw;
-            background: radial-gradient(circle, rgba(197, 160, 89, 0.05) 0%, transparent 70%);
-            top: -10%; right: -10%; z-index: -1;
-        }
-
-        /* --- NAVIGATION --- */
-        nav {
-            padding: 2rem 8%; display: flex; justify-content: space-between;
-            align-items: center; position: relative; z-index: 100;
-        }
-
+        /* --- LUXURY ANIMATED LOGO --- */
+        nav { padding: 2rem 8%; text-align: center; border-bottom: 1px solid var(--border); }
         .logo {
-            font-family: 'Marcellus', serif;
-            font-size: 1.8rem; letter-spacing: 4px;
-            background: linear-gradient(to right, #fff, var(--gold), #fff);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shine 5s linear infinite;
+            font-family: 'Marcellus', serif; font-size: 2.5rem; letter-spacing: 8px;
+            background: linear-gradient(90deg, #fff, var(--gold), #fff);
+            background-size: 200% auto; -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; animation: shine 5s linear infinite;
         }
-
         @keyframes shine { to { background-position: 200% center; } }
 
-        /* --- SEARCH SECTION --- */
-        .container {
-            max-width: 900px; margin: 5vh auto; padding: 0 2rem;
-            text-align: center;
+        /* --- SEARCH AREA --- */
+        .search-container {
+            max-width: 800px; margin: 50px auto; padding: 0 20px;
         }
 
-        .hero-text h1 {
-            font-family: 'Marcellus', serif; font-size: clamp(2.5rem, 6vw, 4.5rem);
-            margin-bottom: 1rem; opacity: 0; transform: translateY(30px);
+        .filter-group {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+            background: var(--glass); padding: 30px; border-radius: 30px;
+            border: 1px solid var(--border); backdrop-filter: blur(10px);
         }
 
-        .search-box {
-            background: var(--glass);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 10px; border-radius: 20px;
-            display: flex; gap: 10px; margin-top: 3rem;
-            backdrop-filter: blur(10px);
-            transition: 0.4s;
-        }
-
-        .search-box:focus-within {
-            border-color: var(--gold);
-            box-shadow: 0 0 30px rgba(197, 160, 89, 0.1);
+        .input-box { position: relative; }
+        .input-box label {
+            display: block; font-size: 0.7rem; color: var(--gold);
+            letter-spacing: 2px; margin-bottom: 10px; text-transform: uppercase;
         }
 
         input {
-            background: transparent; border: none;
-            padding: 15px 20px; color: white; flex: 1;
-            font-size: 1.1rem; outline: none;
+            width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            padding: 15px; border-radius: 12px; color: white; font-size: 1.2rem;
+            outline: none; transition: 0.3s;
         }
 
-        .filter-select {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: var(--gold); padding: 0 15px;
-            border-radius: 12px; cursor: pointer;
-            outline: none;
+        input:focus { border-color: var(--gold); background: rgba(255,255,255,0.08); }
+
+        /* --- RESULTS --- */
+        #status { text-align: center; margin-top: 20px; font-size: 0.8rem; color: var(--gold); }
+        
+        .results-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px; margin-top: 40px;
         }
 
-        .btn-search {
-            background: var(--gold); color: black;
-            border: none; padding: 0 30px; border-radius: 12px;
-            font-weight: 600; cursor: pointer; transition: 0.3s;
+        .word-tag {
+            background: var(--glass); border: 1px solid var(--border);
+            padding: 12px; border-radius: 10px; text-align: center;
+            font-size: 1rem; color: #eee; transition: 0.3s;
+            cursor: pointer; animation: fadeIn 0.5s ease forwards;
         }
 
-        .btn-search:hover { background: var(--gold-light); transform: scale(1.05); }
-
-        /* --- RESULTS SECTION --- */
-        #results {
-            margin-top: 4rem; text-align: left;
-            display: grid; gap: 20px;
+        .word-tag:hover {
+            background: var(--gold); color: black; transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.2);
         }
 
-        .word-card {
-            background: var(--glass); border-left: 3px solid var(--gold);
-            padding: 2rem; border-radius: 0 20px 20px 0;
-            animation: slideIn 0.6s ease forwards;
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+
+        /* --- LOADING OVERLAY --- */
+        #loader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg); z-index: 2000; display: flex;
+            justify-content: center; align-items: center; transition: 0.5s;
         }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(-20px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        .word-card h2 {
-            font-family: 'Marcellus', serif; color: var(--gold);
-            font-size: 2rem; margin-bottom: 0.5rem;
-        }
-
-        .word-card .type {
-            font-style: italic; color: var(--text-muted);
-            font-size: 0.9rem; margin-bottom: 1rem; display: block;
-        }
-
-        .word-card .meaning { line-height: 1.8; color: #ccc; }
-
-        /* --- EMPTY STATE --- */
-        .info-msg { color: var(--text-muted); margin-top: 2rem; font-style: italic; }
-
     </style>
 </head>
 <body>
 
     <div id="loader">
-        <div class="logo">KBBI.</div>
+        <div class="logo" style="font-size: 1.5rem;">MEMUAT DATABASE...</div>
     </div>
 
-    <div class="glow"></div>
-
     <nav>
-        <div class="logo">LEXICON</div>
-        <div style="font-size: 0.7rem; letter-spacing: 2px;">PREMIUM DICTIONARY</div>
+        <div class="logo">KBBI.ELITE</div>
     </nav>
 
-    <main class="container">
-        <div class="hero-text">
-            <h1 id="title">Eksplorasi Bahasa <br><span style="color: var(--gold)">Indonesia.</span></h1>
-            <p style="color: var(--text-muted); margin-top: 10px;">Cari makna kata dengan standar kamus besar paling akurat.</p>
+    <main class="search-container">
+        <div class="filter-group">
+            <div class="input-box">
+                <label>Awalan (Prefix)</label>
+                <input type="text" id="prefix" placeholder="Misal: e" maxlength="5">
+            </div>
+            <div class="input-box">
+                <label>Akhiran (Suffix)</label>
+                <input type="text" id="suffix" placeholder="Misal: g" maxlength="5">
+            </div>
         </div>
 
-        <div class="search-box">
-            <select id="searchType" class="filter-select">
-                <option value="exact">Kata Persis</option>
-                <option value="prefix">Awalan (Prefix)</option>
-                <option value="suffix">Akhiran (Suffix)</option>
-            </select>
-            <input type="text" id="keyword" placeholder="Ketik kata yang dicari..." autocomplete="off">
-            <button class="btn-search" onclick="searchWord()">CARI</button>
-        </div>
+        <div id="status">Mengunduh ribuan kata...</div>
 
-        <div id="results">
-            <div class="info-msg">Silakan masukkan kata untuk mulai mencari.</div>
-        </div>
+        <div class="results-grid" id="results">
+            </div>
     </main>
 
     <script>
-        // GSAP Animations on Load
-        window.addEventListener('load', () => {
-            gsap.to("#loader", { duration: 1, opacity: 0, display: "none", delay: 1 });
-            gsap.to("#title", { duration: 1.2, y: 0, opacity: 1, ease: "power4.out", delay: 1.2 });
-        });
+        let dictionary = [];
 
-        async function searchWord() {
-            const keyword = document.getElementById('keyword').value.toLowerCase().trim();
-            const type = document.getElementById('searchType').value;
-            const resultsDiv = document.getElementById('results');
-
-            if (!keyword) return;
-
-            resultsDiv.innerHTML = '<div class="info-msg">Mencari di dalam database...</div>';
-
+        // 1. Ambil database dari GitHub (Daftar kata KBBI bersih)
+        async function loadDatabase() {
+            const status = document.getElementById('status');
             try {
-                // Menggunakan API publik KBBI (Open Source Repository)
-                // Data diambil dari repositori kamus-indonesia yang komplit
-                const response = await fetch(`https://new-kbbi-api.herokuapp.com/cari/${keyword}`);
-                const data = await response.json();
+                // Menggunakan source raw GitHub yang berisi ribuan kata Indonesia tunggal
+                const response = await fetch('https://raw.githubusercontent.com/indonesia-it/id-words/master/indonesian-words.txt');
+                const text = await response.text();
+                
+                // Pisahkan per baris dan filter:
+                // - Hanya kata tunggal (tidak ada spasi atau tanda hubung '-')
+                // - Panjang minimal 2 karakter
+                dictionary = text.split('\n')
+                    .map(word => word.trim().toLowerCase())
+                    .filter(word => word.length > 1 && !word.includes(' ') && !word.includes('-'));
 
-                resultsDiv.innerHTML = '';
-
-                if (data.status && data.data.length > 0) {
-                    let filteredData = data.data;
-
-                    // Logika Filter Awalan/Akhiran
-                    if (type === 'prefix') {
-                        filteredData = data.data.filter(item => item.lema.toLowerCase().startsWith(keyword));
-                    } else if (type === 'suffix') {
-                        filteredData = data.data.filter(item => item.lema.toLowerCase().endsWith(keyword));
-                    }
-
-                    if (filteredData.length === 0) {
-                        resultsDiv.innerHTML = '<div class="info-msg">Tidak ada kata yang sesuai dengan filter tersebut.</div>';
-                        return;
-                    }
-
-                    filteredData.forEach((item, index) => {
-                        const card = document.createElement('div');
-                        card.className = 'word-card';
-                        card.style.animationDelay = `${index * 0.1}s`;
-                        
-                        // Mengambil semua arti jika lebih dari satu
-                        const meanings = item.arti.map(a => `<li>${a.deskripsi}</li>`).join('');
-
-                        card.innerHTML = `
-                            <h2>${item.lema}</h2>
-                            <span class="type">Etimologi / Kelas Kata</span>
-                            <div class="meaning">
-                                <ul style="list-style-position: inside;">${meanings}</ul>
-                            </div>
-                        `;
-                        resultsDiv.appendChild(card);
-                    });
-                } else {
-                    resultsDiv.innerHTML = '<div class="info-msg">Kata tidak ditemukan dalam database KBBI.</div>';
-                }
+                status.innerText = `${dictionary.length.toLocaleString()} Kata Terisi. Mulai mengetik...`;
+                gsap.to("#loader", { opacity: 0, pointerEvents: "none", duration: 1 });
             } catch (error) {
-                resultsDiv.innerHTML = '<div class="info-msg">Maaf, terjadi kesalahan koneksi ke database.</div>';
+                status.innerText = "Gagal memuat database. Pastikan internet aktif.";
                 console.error(error);
             }
         }
 
-        // Fitur Enter untuk mencari
-        document.getElementById('keyword').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                searchWord();
+        // 2. Fungsi Filter Otomatis
+        function filterWords() {
+            const prefix = document.getElementById('prefix').value.toLowerCase();
+            const suffix = document.getElementById('suffix').value.toLowerCase();
+            const resultsDiv = document.getElementById('results');
+            
+            // Bersihkan hasil sebelumnya
+            resultsDiv.innerHTML = "";
+
+            if (prefix === "" && suffix === "") return;
+
+            // Logika pencarian
+            const filtered = dictionary.filter(word => {
+                const matchPrefix = prefix ? word.startsWith(prefix) : true;
+                const matchSuffix = suffix ? word.endsWith(suffix) : true;
+                return matchPrefix && matchSuffix;
+            }).slice(0, 100); // Batasi 100 hasil pertama agar tetap ringan & premium
+
+            // 3. Render Hasil
+            filtered.forEach(word => {
+                const div = document.createElement('div');
+                div.className = 'word-tag';
+                div.innerText = word;
+                resultsDiv.appendChild(div);
+            });
+
+            if (filtered.length === 0) {
+                resultsDiv.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted);">Tidak ada kata tunggal yang ditemukan.</div>`;
             }
-        });
+        }
+
+        // Event Listeners
+        document.getElementById('prefix').addEventListener('input', filterWords);
+        document.getElementById('suffix').addEventListener('input', filterWords);
+
+        // Jalankan saat load
+        loadDatabase();
     </script>
 </body>
 </html>
